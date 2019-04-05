@@ -6,12 +6,14 @@ import numpy as np
 import pandas as pd
 from pandas.api.types import is_numeric_dtype, is_string_dtype,is_bool
 
-# load in train data
-df = pd.read_csv('challenge_train.csv', low_memory = False,index_col = 0)
+# load in data
+df = pd.read_csv('challenge_train.csv', low_memory = False)
 # df.astype(np.float)
-X = df.drop(labels = ['md5','verdict'],axis = 'columns')
-X = X.drop(X.columns[X.columns.str.contains('unnamed',case = False)],axis = 1)
 y = df['verdict']
+X = df.drop(labels = ['md5','verdict'],axis = 'columns')
+X.astype(np.float)
+#X = X.drop(X.columns[X.columns.str.contains('unnamed',case = False)],axis = 'columns')
+
 # print(X_train.head())
 
 def make_nums_from_bool(df):
@@ -23,7 +25,7 @@ def make_nums_from_bool(df):
 
 
 # replacing trojan with 1, clean with 0 in df
-y = y.replace(to_replace={'trojan' : 1,'clean' : 0},inplace=True)
+y.replace(to_replace={'trojan' : 1,'clean' : 0},inplace=True)
 	
 		
 
@@ -33,10 +35,10 @@ y = y.replace(to_replace={'trojan' : 1,'clean' : 0},inplace=True)
 
 def main():
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
-	X_train, X_valid, Y_train, Y_valid = train_test_split(X_train, y_train, test_size=0.2)
-	rf = RandomForestRegressor(n_estimators=3, max_depth = 3,n_jobs = -1)
+	# X_train, X_valid, Y_train, Y_valid = train_test_split(X_train, y_train, test_size=0.2)
+	rf = RandomForestRegressor(n_estimators=3, max_depth = 3)
 	rf.fit(X_train,y_train)
-	print("Validation: ", r2_score(Y_valid,rf.predict(X_valid)))
+	print("Validation: ", r2_score(y_test,rf.predict(X_test)))
 
 if __name__ == '__main__':
 	main()

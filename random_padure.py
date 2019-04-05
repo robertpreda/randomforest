@@ -21,6 +21,8 @@ def make_nums_from_bool(df):
 		if is_bool(c):
 			df[n] = (df[n] == True).astype(int)
 
+
+# replacing trojan with 1, clean with 0 in df
 y = y.replace(to_replace={'trojan' : 1,'clean' : 0},inplace=True)
 	
 		
